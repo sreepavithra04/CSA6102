@@ -1,0 +1,71 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP+3m//rRGdHDaFl3c4D+Yt",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP-2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import hashlib, datetime\n",
+        "def sha256_of(filename):\n",
+        "    with open(filename, \"rb\") as f:\n",
+        "        return hashlib.sha256(f.read()).hexdigest()\n",
+        "with open(\"evidence.txt\", \"w\") as f:\n",
+        "    f.write(\"Suspect chat log: meeting at 10pm, bring the drive.\")\n",
+        "seizure_hash = sha256_of(\"evidence.txt\")\n",
+        "custody_log = []\n",
+        "custody_log.append(f\"{datetime.datetime.now()} - SEIZED by Officer A - hash={seizure_hash}\")\n",
+        "handoff_hash = sha256_of(\"evidence.txt\")\n",
+        "if handoff_hash == seizure_hash:\n",
+        "    custody_log.append(f\"{datetime.datetime.now()} - RECEIVED by Analyst B - integrity VERIFIED\")\n",
+        "else:\n",
+        "    custody_log.append(f\"{datetime.datetime.now()} - RECEIVED by Analyst B - integrity FAILED (tampered!)\")\n",
+        "print(\"=== Chain of Custody Log ===\")\n",
+        "for entry in custody_log:\n",
+        "    print(entry)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vcKDAZEdR8Zm",
+        "outputId": "b99b6c54-b5de-401c-84f5-9bda9158738d"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "=== Chain of Custody Log ===\n",
+            "2026-07-23 09:22:48.273361 - SEIZED by Officer A - hash=b7eb05cf41efbcc50adc36b12679ce4f12de58460e59500eb6bb62858810f84c\n",
+            "2026-07-23 09:22:48.273737 - RECEIVED by Analyst B - integrity VERIFIED\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
