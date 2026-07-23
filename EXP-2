@@ -1,0 +1,73 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMDPg97EEfjHIy6eF4y4yEn",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP-2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zu5qMlWfChef",
+        "outputId": "98483507-c56b-4c03-c0d9-d7b4f0dda97d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "=== Chain of Custody Log ===\n",
+            "2026-07-23 12:55:15.916156 - SEIZED by Officer A - hash=b7eb05cf41efbcc50adc36b12679ce4f12de58460e59500eb6bb62858810f84c\n",
+            "2026-07-23 12:55:15.918800 - RECEIVED by Analyst B - integrity VERIFIED\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib, datetime\n",
+        "def sha256_of(filename):\n",
+        "    with open(filename, \"rb\") as f:\n",
+        "        return hashlib.sha256(f.read()).hexdigest()\n",
+        "# Step 1: Investigator seizes evidence and hashes it immediately\n",
+        "with open(\"evidence.txt\", \"w\") as f:\n",
+        "    f.write(\"Suspect chat log: meeting at 10pm, bring the drive.\")\n",
+        "seizure_hash = sha256_of(\"evidence.txt\")\n",
+        "custody_log = []\n",
+        "custody_log.append(f\"{datetime.datetime.now()} - SEIZED by Officer A - hash={seizure_hash}\")\n",
+        "# Step 2: Evidence is later handed to a forensic analyst; verify integrity\n",
+        "handoff_hash = sha256_of(\"evidence.txt\")\n",
+        "if handoff_hash == seizure_hash:\n",
+        "    custody_log.append(f\"{datetime.datetime.now()} - RECEIVED by Analyst B - integrity VERIFIED\")\n",
+        "else:\n",
+        "    custody_log.append(f\"{datetime.datetime.now()} - RECEIVED by Analyst B - integrity FAILED (tampered!)\")\n",
+        "print(\"=== Chain of Custody Log ===\")\n",
+        "for entry in custody_log:\n",
+        "    print(entry)"
+      ]
+    }
+  ]
+}
