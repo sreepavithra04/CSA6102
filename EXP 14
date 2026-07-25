@@ -1,0 +1,154 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOYoN7Z/j2rBKyf6PPpsWpf",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2014\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vzZCxp3Dgh_k",
+        "outputId": "5f829ae2-01cd-4a88-fe49-28f0eefe45d7"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "===== EMAIL DETAILS ====\n",
+            "Sender : PayPal Support <support@paypa1.com>\n",
+            "Subject: Verify Your Account\n",
+            "\n",
+            "===== URL ANALYSIS ====\n",
+            "URL: http://paypa1-security-login.com/verify\n",
+            "Status: Suspicious\n",
+            "URL: https://paypal.com\n",
+            "Status: Legitimate\n",
+            "\n",
+            "===== SENDER CHECK ====\n",
+            "Possible Spoofed Sender\n",
+            "\n",
+            "===== RISK SCORE ====\n",
+            "70 /100\n",
+            "\n",
+            "===== SUMMARY ====\n",
+            "URLs Found: 2\n",
+            "Suspicious URLs: 1\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "from email import message_from_string\n",
+        "from urllib.parse import urlparse\n",
+        "\n",
+        "# Sample Email\n",
+        "email_text = \"\"\"From: PayPal Support <support@paypa1.com>\n",
+        "To: user@gmail.com\n",
+        "Subject: Verify Your Account\n",
+        "\n",
+        "Dear Customer,\n",
+        "\n",
+        "Your account has been limited.\n",
+        "Click here immediately:\n",
+        "http://paypa1-security-login.com/verify\n",
+        "\n",
+        "Or visit:\n",
+        "https://paypal.com\n",
+        "\n",
+        "Regards,\n",
+        "PayPal Team\n",
+        "\"\"\"\n",
+        "\n",
+        "# Parse Email\n",
+        "msg = message_from_string(email_text)\n",
+        "\n",
+        "# Ensure sender and subject are strings, even if msg.get() returns None\n",
+        "sender = msg.get(\"From\", \"\")\n",
+        "subject = msg.get(\"Subject\", \"\")\n",
+        "\n",
+        "print(\"===== EMAIL DETAILS ====\")\n",
+        "print(\"Sender :\", sender)\n",
+        "print(\"Subject:\", subject)\n",
+        "\n",
+        "# Extract URLs\n",
+        "urls = re.findall(r'https?://[^\\s]+', email_text)\n",
+        "\n",
+        "print(\"\\n===== URL ANALYSIS ====\")\n",
+        "\n",
+        "suspicious_count = 0\n",
+        "\n",
+        "for url in urls:\n",
+        "    domain = urlparse(url).netloc\n",
+        "\n",
+        "    suspicious = False\n",
+        "\n",
+        "    if \"-\" in domain:\n",
+        "        suspicious = True\n",
+        "\n",
+        "    if \"paypa1\" in domain:\n",
+        "        suspicious = True\n",
+        "\n",
+        "    if domain.count(\".\") > 2:\n",
+        "        suspicious = True\n",
+        "\n",
+        "    print(\"URL:\", url)\n",
+        "\n",
+        "    if suspicious:\n",
+        "        print(\"Status: Suspicious\")\n",
+        "        suspicious_count += 1\n",
+        "    else:\n",
+        "        print(\"Status: Legitimate\")\n",
+        "\n",
+        "# Sender Spoof Detection\n",
+        "print(\"\\n===== SENDER CHECK ====\")\n",
+        "\n",
+        "if \"paypa1\" in sender.lower():\n",
+        "    print(\"Possible Spoofed Sender\")\n",
+        "else:\n",
+        "    print(\"Sender looks normal\")\n",
+        "\n",
+        "# Risk Score\n",
+        "score = suspicious_count * 40\n",
+        "\n",
+        "if \"paypa1\" in sender.lower():\n",
+        "    score += 30\n",
+        "\n",
+        "score = min(score, 100)\n",
+        "\n",
+        "print(\"\\n===== RISK SCORE ====\")\n",
+        "print(score, \"/100\")\n",
+        "\n",
+        "print(\"\\n===== SUMMARY ====\")\n",
+        "print(\"URLs Found:\", len(urls))\n",
+        "print(\"Suspicious URLs:\", suspicious_count)"
+      ]
+    }
+  ]
+}
