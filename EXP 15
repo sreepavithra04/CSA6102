@@ -1,0 +1,97 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNTOom2d1Q432CWAL1NXcpE",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2015\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "lb_O1w8IcvVj",
+        "outputId": "75eb933c-3351-427e-8d39-3b6fa359e4d9"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "MD5    : fa5b771787d8687c9d9860ea98367122\n",
+            "SHA1   : ae1a077157f51540d0b082689b91d7283d7170f5\n",
+            "SHA256 : 74696de9d6e307ff5bc2d7ec040b2ac1b44593bc3461ab1681743e27c22dddf0\n",
+            "\n",
+            "Detection Result\n",
+            "Matched: Safe Sample\n",
+            "\n",
+            "CSV Created Successfully\n",
+            "\n",
+            "Hash Collision Risk\n",
+            "MD5 -> High\n",
+            "SHA1 -> Medium\n",
+            "SHA256 -> Very Low\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "import csv\n",
+        "filename = \"sample.txt\"\n",
+        "with open(filename, \"w\") as f:\n",
+        "    f.write(\"This is a sample file.\")\n",
+        "with open(filename, \"rb\") as f:\n",
+        "    data = f.read()\n",
+        "md5 = hashlib.md5(data).hexdigest()\n",
+        "sha1 = hashlib.sha1(data).hexdigest()\n",
+        "sha256 = hashlib.sha256(data).hexdigest()\n",
+        "print(\"MD5    :\", md5)\n",
+        "print(\"SHA1   :\", sha1)\n",
+        "print(\"SHA256 :\", sha256)\n",
+        "known_hashes = {\n",
+        "    md5: \"Safe Sample\",\n",
+        "    \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\": \"Trojan\",\n",
+        "    \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\": \"Ransomware\"\n",
+        "}\n",
+        "print(\"\\nDetection Result\")\n",
+        "if md5 in known_hashes:\n",
+        "    print(\"Matched:\", known_hashes[md5])\n",
+        "else:\n",
+        "    print(\"Unknown File\")\n",
+        "with open(\"malware_database.csv\", \"w\", newline=\"\") as file:\n",
+        "    writer = csv.writer(file)\n",
+        "    writer.writerow([\"MD5\", \"SHA1\", \"SHA256\", \"Classification\"])\n",
+        "    writer.writerow([md5, sha1, sha256,\n",
+        "                     known_hashes.get(md5, \"Unknown\")])\n",
+        "print(\"\\nCSV Created Successfully\")\n",
+        "print(\"\\nHash Collision Risk\")\n",
+        "print(\"MD5 -> High\")\n",
+        "print(\"SHA1 -> Medium\")\n",
+        "print(\"SHA256 -> Very Low\")"
+      ]
+    }
+  ]
+}
