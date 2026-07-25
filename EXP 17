@@ -1,0 +1,163 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNxXwPfpDonmg/hOoDDCltj",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2017\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "S-GG68qHdmb9",
+        "outputId": "572dccc6-645b-4121-deaf-ba2f36e1a341"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "===== PASSWORD STRENGTH CHECK =====\n",
+            "admin -> Weak\n",
+            "123456 -> Weak\n",
+            "Password -> Weak\n",
+            "Welcome123 -> Strong\n",
+            "Strong@123 -> Strong\n",
+            "\n",
+            "===== SQL INJECTION DETECTION =====\n",
+            "admin -> Normal Input\n",
+            "' OR 1=1 -- -> Possible SQL Injection\n",
+            "hello -> Normal Input\n",
+            "'; DROP TABLE users; -- -> Possible SQL Injection\n",
+            "\n",
+            "===== DIRECTORY TRAVERSAL DETECTION =====\n",
+            "/images/logo.png -> Safe\n",
+            "../../etc/passwd -> Directory Traversal Attempt\n",
+            "../admin/config.php -> Directory Traversal Attempt\n",
+            "/home/user/file.txt -> Safe\n",
+            "\n",
+            "===== ATTACK PATTERN LOG =====\n",
+            "Password Guessing Detected\n",
+            "SQL Injection Attempt\n",
+            "Directory Traversal Attempt\n",
+            "\n",
+            "===== WAF RULE SUGGESTIONS =====\n",
+            "- Block repeated login failures\n",
+            "- Filter SQL keywords\n",
+            "- Reject '../' patterns\n",
+            "- Enable rate limiting\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "\n",
+        "print(\"===== PASSWORD STRENGTH CHECK =====\")\n",
+        "\n",
+        "passwords = [\n",
+        "    \"admin\",\n",
+        "    \"123456\",\n",
+        "    \"Password\",\n",
+        "    \"Welcome123\",\n",
+        "    \"Strong@123\"\n",
+        "]\n",
+        "\n",
+        "for pwd in passwords:\n",
+        "\n",
+        "    weak = False\n",
+        "\n",
+        "    if len(pwd) < 8:\n",
+        "        weak = True\n",
+        "\n",
+        "    if pwd.lower() in [\"admin\", \"password\", \"123456\"]:\n",
+        "        weak = True\n",
+        "\n",
+        "    if weak:\n",
+        "        print(pwd, \"-> Weak\")\n",
+        "    else:\n",
+        "        print(pwd, \"-> Strong\")\n",
+        "\n",
+        "print(\"\\n===== SQL INJECTION DETECTION =====\")\n",
+        "\n",
+        "inputs = [\n",
+        "    \"admin\",\n",
+        "    \"' OR 1=1 --\",\n",
+        "    \"hello\",\n",
+        "    \"'; DROP TABLE users; --\"\n",
+        "]\n",
+        "\n",
+        "pattern = r\"('.*--|OR\\s+1=1|DROP\\s+TABLE)\"\n",
+        "\n",
+        "for item in inputs:\n",
+        "\n",
+        "    if re.search(pattern, item, re.IGNORECASE):\n",
+        "        print(item, \"-> Possible SQL Injection\")\n",
+        "    else:\n",
+        "        print(item, \"-> Normal Input\")\n",
+        "\n",
+        "print(\"\\n===== DIRECTORY TRAVERSAL DETECTION =====\")\n",
+        "\n",
+        "paths = [\n",
+        "    \"/images/logo.png\",\n",
+        "    \"../../etc/passwd\",\n",
+        "    \"../admin/config.php\",\n",
+        "    \"/home/user/file.txt\"\n",
+        "]\n",
+        "\n",
+        "for p in paths:\n",
+        "\n",
+        "    if \"../\" in p:\n",
+        "        print(p, \"-> Directory Traversal Attempt\")\n",
+        "    else:\n",
+        "        print(p, \"-> Safe\")\n",
+        "\n",
+        "print(\"\\n===== ATTACK PATTERN LOG =====\")\n",
+        "\n",
+        "logs = [\n",
+        "    \"Password Guessing Detected\",\n",
+        "    \"SQL Injection Attempt\",\n",
+        "    \"Directory Traversal Attempt\"\n",
+        "]\n",
+        "\n",
+        "for log in logs:\n",
+        "    print(log)\n",
+        "\n",
+        "print(\"\\n===== WAF RULE SUGGESTIONS =====\")\n",
+        "\n",
+        "rules = [\n",
+        "    \"Block repeated login failures\",\n",
+        "    \"Filter SQL keywords\",\n",
+        "    \"Reject '../' patterns\",\n",
+        "    \"Enable rate limiting\"\n",
+        "]\n",
+        "\n",
+        "for rule in rules:\n",
+        "    print(\"-\", rule)"
+      ]
+    }
+  ]
+}
