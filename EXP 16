@@ -1,0 +1,150 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPHPq1naljVz3xw4LEbVFfx",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2016\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ok8X3eXbhGdh",
+        "outputId": "f9127684-04db-4f02-f448-3286a7c39984"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "===== DOMAINS =====\n",
+            "badransom.com\n",
+            "evilencrypt.net\n",
+            "\n",
+            "===== IPS =====\n",
+            "192.168.1.20\n",
+            "10.20.30.40\n",
+            "\n",
+            "===== EXTENSIONS =====\n",
+            ".locked\n",
+            ".encrypted\n",
+            "\n",
+            "===== YARA-LIKE RULE =====\n",
+            "\n",
+            "rule Sample_Ransomware\n",
+            "{\n",
+            "    strings:\n",
+            "        $a = \".locked\"\n",
+            "        $b = \".encrypted\"\n",
+            "        $c = \"Your files are encrypted\"\n",
+            "\n",
+            "    condition:\n",
+            "        any of them\n",
+            "}\n",
+            "\n",
+            "\n",
+            "===== RANSOMWARE TIMELINE =====\n",
+            "1 - Initial Infection\n",
+            "2 - Privilege Escalation\n",
+            "3 - Encryption Started\n",
+            "4 - Files Renamed\n",
+            "5 - Ransom Note Created\n",
+            "\n",
+            "===== FAMILY PROFILE =====\n",
+            "Family Name : SampleLocker\n",
+            "Indicators : 2 Domains, 2 IPs\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "\n",
+        "ioc_data = \"\"\"\n",
+        "Domain: badransom.com\n",
+        "IP: 192.168.1.20\n",
+        "Extension: .locked\n",
+        "\n",
+        "Domain: evilencrypt.net\n",
+        "IP: 10.20.30.40\n",
+        "Extension: .encrypted\n",
+        "\n",
+        "Note:\n",
+        "Your files are encrypted.\n",
+        "Send Bitcoin.\n",
+        "\"\"\"\n",
+        "\n",
+        "domains = re.findall(r'Domain:\\s*(.*)', ioc_data)\n",
+        "ips = re.findall(r'IP:\\s*(.*)', ioc_data)\n",
+        "extensions = re.findall(r'Extension:\\s*(.*)', ioc_data)\n",
+        "\n",
+        "print(\"===== DOMAINS =====\")\n",
+        "for d in domains:\n",
+        "    print(d)\n",
+        "\n",
+        "print(\"\\n===== IPS =====\")\n",
+        "for ip in ips:\n",
+        "    print(ip)\n",
+        "\n",
+        "print(\"\\n===== EXTENSIONS =====\")\n",
+        "for ext in extensions:\n",
+        "    print(ext)\n",
+        "\n",
+        "print(\"\\n===== YARA-LIKE RULE =====\")\n",
+        "\n",
+        "print(\"\"\"\n",
+        "rule Sample_Ransomware\n",
+        "{\n",
+        "    strings:\n",
+        "        $a = \".locked\"\n",
+        "        $b = \".encrypted\"\n",
+        "        $c = \"Your files are encrypted\"\n",
+        "\n",
+        "    condition:\n",
+        "        any of them\n",
+        "}\n",
+        "\"\"\")\n",
+        "\n",
+        "print(\"\\n===== RANSOMWARE TIMELINE =====\")\n",
+        "\n",
+        "timeline = [\n",
+        "    \"Initial Infection\",\n",
+        "    \"Privilege Escalation\",\n",
+        "    \"Encryption Started\",\n",
+        "    \"Files Renamed\",\n",
+        "    \"Ransom Note Created\"\n",
+        "]\n",
+        "\n",
+        "for i, step in enumerate(timeline, start=1):\n",
+        "    print(i, \"-\", step)\n",
+        "\n",
+        "print(\"\\n===== FAMILY PROFILE =====\")\n",
+        "print(\"Family Name : SampleLocker\")\n",
+        "print(\"Indicators :\", len(domains), \"Domains,\", len(ips), \"IPs\")"
+      ]
+    }
+  ]
+}
