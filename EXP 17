@@ -1,0 +1,77 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNQHg5bnXb/Kqq0rLt1CeCA",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2017\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "iLMMcYZL5iKr",
+        "outputId": "5fc593a5-9958-4d2d-c140-1bf3639ea703"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Live acquisition: {'timestamp': 1785228395.8649201, 'running_processes': 15, 'cpu_percent': 10.5}\n",
+            "Dead acquisition: {'hard_disk_files': ['a.txt', 'b.txt'], 'ram_data': None}\n"
+          ]
+        }
+      ],
+      "source": [
+        "import time\n",
+        "import psutil\n",
+        "import json\n",
+        "\n",
+        "def live_acquisition():\n",
+        "    return {\n",
+        "        \"timestamp\": time.time(),\n",
+        "        \"running_processes\": len(psutil.pids()),\n",
+        "        \"cpu_percent\": psutil.cpu_percent(interval=0.1),\n",
+        "    }\n",
+        "\n",
+        "def dead_acquisition(snapshot_file):\n",
+        "    with open(snapshot_file) as f:\n",
+        "        return json.load(f)\n",
+        "\n",
+        "dead_snapshot_path = \"system_snapshot.json\"\n",
+        "static_snapshot = {\"hard_disk_files\": [\"a.txt\", \"b.txt\"], \"ram_data\": None}\n",
+        "with open(dead_snapshot_path, \"w\") as f:\n",
+        "    json.dump(static_snapshot, f)\n",
+        "\n",
+        "live_result = live_acquisition()\n",
+        "dead_result = dead_acquisition(dead_snapshot_path)\n",
+        "print(\"Live acquisition:\", live_result)\n",
+        "print(\"Dead acquisition:\", dead_result)"
+      ]
+    }
+  ]
+}
