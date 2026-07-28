@@ -1,0 +1,75 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMdglzSsccDKJ4nhL7Eww5R",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2019\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Ku9eu3CN6HkJ",
+        "outputId": "cd68a5e4-2909-4c80-c6f3-ee93b18a661a"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Original hash: 21f8e161d2454cfb9e04f2d17342eda2eebe4554c1f8529f38d3c6f5e97a7759\n",
+            "Copy hash:  21f8e161d2454cfb9e04f2d17342eda2eebe4554c1f8529f38d3c6f5e97a7759\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "import hashlib\n",
+        "\n",
+        "original_path = \"original_evidence.bin\"\n",
+        "with open(original_path, \"wb\") as f:\n",
+        "    f.write(os.urandom(1024)) # simulate a small storage device\n",
+        "\n",
+        "def bit_stream_copy(src_path, dst_path):\n",
+        "    with open(src_path, \"rb\") as src, open(dst_path, \"wb\") as dst:\n",
+        "        dst.write(src.read())\n",
+        "\n",
+        "copy_path = \"bitstream_copy.bin\"\n",
+        "bit_stream_copy(original_path, copy_path)\n",
+        "\n",
+        "def sha256_of_file(path):\n",
+        "    with open(path, \"rb\") as f:\n",
+        "        return hashlib.sha256(f.read()).hexdigest()\n",
+        "\n",
+        "original_hash = sha256_of_file(original_path)\n",
+        "copy_hash = sha256_of_file(copy_path)\n",
+        "print(\"Original hash:\", original_hash)\n",
+        "print(\"Copy hash: \", copy_hash)"
+      ]
+    }
+  ]
+}
