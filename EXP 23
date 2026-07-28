@@ -1,0 +1,62 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOO2mSxddMiwZ9eJn1Ic7Tg",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2023\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Q-kSS4vh7LmI",
+        "outputId": "9c54b0e3-2587-4a0b-d3df-e76f91b958f2"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "File size: 5000 bytes -> allocated: 8192 bytes, slack space:\n",
+            "3192 bytes\n"
+          ]
+        }
+      ],
+      "source": [
+        "CLUSTER_SIZE = 4096 # typical disk cluster size in bytes\n",
+        "def calculate_slack_space(file_size, cluster_size=CLUSTER_SIZE):\n",
+        "    clusters_needed = -(-file_size // cluster_size) # ceiling division\n",
+        "    allocated_space = clusters_needed * cluster_size\n",
+        "    slack_space = allocated_space - file_size\n",
+        "    return allocated_space, slack_space\n",
+        "file_size = 5000 # bytes\n",
+        "allocated, slack = calculate_slack_space(file_size)\n",
+        "print(f\"File size: {file_size} bytes -> allocated: {allocated} bytes, slack space:\\n{slack} bytes\")"
+      ]
+    }
+  ]
+}
