@@ -1,0 +1,63 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMZr2n9bgwdSjHFZ4ioGctD",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2018\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GtG5EaaE54ah",
+        "outputId": "ec1e8187-d54c-4482-86c2-1bf3f9965015"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Forensic image size: 72\n",
+            "Duplication size: 9\n"
+          ]
+        }
+      ],
+      "source": [
+        "raw_disk_full = b\"FILE1DATA\" + b\"\\x00\" * 15 + b\"DELETED_FILE_DATA\" + b\"\\x00\" * 15 + b\"FREE_SPACE_00000\"\n",
+        "def create_forensic_image(raw_bytes):\n",
+        "    return bytes(raw_bytes) # bit-for-bit: files + deleted data + free space\n",
+        "def create_duplication(raw_bytes, active_regions):\n",
+        "    return b\"\".join(raw_bytes[start:end] for start, end in active_regions)\n",
+        "active_regions = [(0, 9)] # only the live \"FILE1DATA\" region\n",
+        "forensic_image = create_forensic_image(raw_disk_full)\n",
+        "duplication_copy = create_duplication(raw_disk_full, active_regions)\n",
+        "print(\"Forensic image size:\", len(forensic_image))\n",
+        "print(\"Duplication size:\", len(duplication_copy))"
+      ]
+    }
+  ]
+}
