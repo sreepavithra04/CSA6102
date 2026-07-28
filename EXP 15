@@ -1,0 +1,74 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO171VrMQQ45kCUQu+KmmwJ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2015\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Wlp9MEFA44Y9",
+        "outputId": "7c255629-c30f-4db1-ee7b-fab0d75c0c97"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Volatile evidence -> running processes: 15\n",
+            "Non-volatile evidence -> disk files: {'disk_files': ['.config', 'sample_data'], 'file_count': 2}\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "import psutil\n",
+        "\n",
+        "def capture_volatile_evidence():\n",
+        "    processes = [p.info for p in psutil.process_iter(['pid', 'name'])]\n",
+        "    return {\n",
+        "        \"running_process_count\": len(processes),\n",
+        "        \"sample_processes\": processes[:5],\n",
+        "    }\n",
+        "\n",
+        "def capture_nonvolatile_evidence(folder):\n",
+        "    files = sorted(os.listdir(folder))\n",
+        "    return {\"disk_files\": files, \"file_count\": len(files)}\n",
+        "\n",
+        "evidence_dir = \"/content\" # Defining evidence_dir, assuming /content as a default directory\n",
+        "\n",
+        "volatile_snapshot = capture_volatile_evidence()\n",
+        "nonvolatile_snapshot = capture_nonvolatile_evidence(evidence_dir)\n",
+        "print(\"Volatile evidence -> running processes:\",\n",
+        "      volatile_snapshot[\"running_process_count\"])\n",
+        "print(\"Non-volatile evidence -> disk files:\", nonvolatile_snapshot)"
+      ]
+    }
+  ]
+}
