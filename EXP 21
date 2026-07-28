@@ -1,0 +1,77 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMfkLAXJafk58JWRX4C0bHg",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2021\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "J9uh8TSV6pJB",
+        "outputId": "fdf62b26-f64b-4517-dd0c-49997362a5e0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Recovered 2 file(s) via carving\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "\n",
+        "def make_fake_jpeg(payload: bytes):\n",
+        "    return b\"\\xff\\xd8\\xff\" + payload + b\"\\xff\\xd9\"\n",
+        "jpeg1 = make_fake_jpeg(b\"PHOTO_OF_SUSPECT_CAR\")\n",
+        "jpeg2 = make_fake_jpeg(b\"CCTV_FRAME_CAPTURE\")\n",
+        "raw_disk_blob = os.urandom(30) + jpeg1 + os.urandom(40) + jpeg2 + os.urandom(20)\n",
+        "def carve_jpegs(blob: bytes):\n",
+        "    recovered = []\n",
+        "    start_marker, end_marker = b\"\\xff\\xd8\\xff\", b\"\\xff\\xd9\"\n",
+        "    pos = 0\n",
+        "    while True:\n",
+        "        start = blob.find(start_marker, pos)\n",
+        "        if start == -1:\n",
+        "            break\n",
+        "        end = blob.find(end_marker, start)\n",
+        "        if end == -1:\n",
+        "            break\n",
+        "        end += len(end_marker)\n",
+        "        recovered.append(blob[start:end])\n",
+        "        pos = end\n",
+        "    return recovered\n",
+        "recovered_files = carve_jpegs(raw_disk_blob)\n",
+        "\n",
+        "print(\"Recovered\", len(recovered_files), \"file(s) via carving\")"
+      ]
+    }
+  ]
+}
