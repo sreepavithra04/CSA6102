@@ -1,0 +1,99 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNOafYaE+LDWWEqxfMFJee0",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2035\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "id": "S15S2YqvCoum"
+      },
+      "outputs": [],
+      "source": [
+        "SIGNATURES = [\n",
+        "    {\"sid\": 1000001, \"name\": \"Possible SQL Injection\", \"pattern\": \"union select\"},\n",
+        "    {\"sid\": 1000002, \"name\": \"Directory Traversal Attempt\", \"pattern\": \"../../../etc/passwd\"},\n",
+        "    {\"sid\": 1000003, \"name\": \"Nmap Scripting Engine User-Agent\", \"pattern\": \"nmap scripting engine\"},\n",
+        "]\n",
+        "\n",
+        "def scan_payloads(packets, signatures=SIGNATURES):\n",
+        "    \"\"\"packets: list of dicts with a 'payload' string field.\n",
+        "    Returns list of alerts: {packet_index, sid, name}.\"\"\"\n",
+        "    alerts = []\n",
+        "    for idx, pkt in enumerate(packets):\n",
+        "        payload_lower = pkt[\"payload\"].lower()\n",
+        "        for sig in signatures:\n",
+        "            if sig[\"pattern\"] in payload_lower:\n",
+        "                alerts.append({\n",
+        "                    \"packet_index\": idx,\n",
+        "                    \"sid\": sig[\"sid\"],\n",
+        "                    \"name\": sig[\"name\"],\n",
+        "                })\n",
+        "    return alerts"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def test_experiment7():\n",
+        "    packets = [\n",
+        "        {\"payload\": \"GET /products?id=1 HTTP/1.1\"},\n",
+        "        {\"payload\": \"GET /login?user=admin' UNION SELECT username,password FROM users-- HTTP/1.1\"},\n",
+        "        {\"payload\": \"GET /download?file=../../../etc/passwd HTTP/1.1\"},\n",
+        "    ]\n",
+        "\n",
+        "    alerts = scan_payloads(packets)\n",
+        "    alert_indices = {a[\"packet_index\"] for a in alerts}\n",
+        "    assert 0 not in alert_indices\n",
+        "    assert 1 in alert_indices\n",
+        "    assert 2 in alert_indices\n",
+        "    assert any(a[\"name\"] == \"Possible SQL Injection\" for a in alerts)\n",
+        "    assert any(a[\"name\"] == \"Directory Traversal Attempt\" for a in alerts)\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment7()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "waPZTPi5Czub",
+        "outputId": "b8736e85-511e-4253-eda0-1b4ffafb4b44"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
