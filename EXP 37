@@ -1,0 +1,108 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNqO1DcWRyfdtXLM6qo/XhM",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2037\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "QZjIcEznEC0X"
+      },
+      "outputs": [],
+      "source": [
+        "from datetime import datetime\n",
+        "from collections import Counter\n",
+        "LOG_FMT = \"%Y-%m-%d %H:%M:%S\"\n",
+        "\n",
+        "def build_baseline_ips(logs):\n",
+        "    \"\"\"Return {user: most_common_ip} based on all log activity.\"\"\"\n",
+        "    by_user = {}\n",
+        "    for entry in logs:\n",
+        "        by_user.setdefault(entry[\"user\"], []).append(entry[\"ip\"])\n",
+        "    return {user: Counter(ips).most_common(1)[0][0] for user, ips in\n",
+        "            by_user.items()}\n",
+        "\n",
+        "def flag_anomalous_downloads(logs, business_start=8, business_end=20):\n",
+        "    baseline = build_baseline_ips(logs)\n",
+        "    flagged = []\n",
+        "    for entry in logs:\n",
+        "        if entry[\"action\"] != \"download\":\n",
+        "            continue\n",
+        "        ts = datetime.strptime(entry[\"timestamp\"], LOG_FMT)\n",
+        "        reasons = []\n",
+        "        if entry[\"ip\"] != baseline.get(entry[\"user\"]):\n",
+        "            reasons.append(\"IP differs from user baseline\")\n",
+        "        if not (business_start <= ts.hour < business_end):\n",
+        "            reasons.append(\"Outside business hours\")\n",
+        "        if reasons:\n",
+        "            flagged.append({**entry, \"reasons\": reasons})\n",
+        "    return flagged"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def test_experiment9():\n",
+        "    logs = [\n",
+        "        {\"user\": \"alice\", \"action\": \"view\", \"file\": \"roadmap.docx\", \"timestamp\":\n",
+        "        \"2026-03-01 10:00:00\", \"ip\": \"10.0.0.5\"},\n",
+        "        {\"user\": \"alice\", \"action\": \"view\", \"file\": \"budget.xlsx\", \"timestamp\":\n",
+        "        \"2026-03-02 11:00:00\", \"ip\": \"10.0.0.5\"},\n",
+        "        {\"user\": \"alice\", \"action\": \"download\", \"file\": \"report.pdf\", \"timestamp\":\n",
+        "        \"2026-03-03 14:00:00\", \"ip\": \"10.0.0.5\"},\n",
+        "        {\"user\": \"alice\", \"action\": \"download\", \"file\": \"customer_database.csv\",\n",
+        "        \"timestamp\": \"2026-03-05 02:15:00\", \"ip\": \"185.220.101.7\"},\n",
+        "    ]\n",
+        "    flagged = flag_anomalous_downloads(logs)\n",
+        "    assert len(flagged) == 1\n",
+        "    assert flagged[0][\"file\"] == \"customer_database.csv\"\n",
+        "    assert \"IP differs from user baseline\" in flagged[0][\"reasons\"]\n",
+        "    assert \"Outside business hours\" in flagged[0][\"reasons\"]\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment9()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Zh81-2PhEvXk",
+        "outputId": "a5be2209-2e88-4a0c-bef5-889a995370ce"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
