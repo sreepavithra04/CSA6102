@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOaT5xyVXp5Ew4LBj8g118X",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/EXP%2038\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "id": "RTdH0AqCFD9L"
+      },
+      "outputs": [],
+      "source": [
+        "import hashlib\n",
+        "import math\n",
+        "from collections import Counter\n",
+        "\n",
+        "def sha256_hash(data: bytes) -> str:\n",
+        "    return hashlib.sha256(data).hexdigest()\n",
+        "\n",
+        "def byte_entropy(data: bytes) -> float:\n",
+        "    if not data:\n",
+        "        return 0.0\n",
+        "    counts = Counter(data)\n",
+        "    length = len(data)\n",
+        "    return -sum((c / length) * math.log2(c / length) for c in counts.values())\n",
+        "\n",
+        "def static_analyze(data: bytes, entropy_threshold=7.5):\n",
+        "    return {\n",
+        "        \"sha256\": sha256_hash(data),\n",
+        "        \"size_bytes\": len(data),\n",
+        "        \"entropy\": round(byte_entropy(data), 2),\n",
+        "        \"likely_packed\": byte_entropy(data) >= entropy_threshold,\n",
+        "    }"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "def test_experiment10():\n",
+        "    plain_sample = (b\"This is a normal configuration file. \" * 20)\n",
+        "    random_sample = os.urandom(2000)\n",
+        "    plain_result = static_analyze(plain_sample)\n",
+        "    random_result = static_analyze(random_sample)\n",
+        "    assert len(plain_result[\"sha256\"]) == 64\n",
+        "    assert plain_result[\"entropy\"] < 5.0\n",
+        "    assert plain_result[\"likely_packed\"] is False\n",
+        "    assert random_result[\"entropy\"] >= 7.5\n",
+        "    assert random_result[\"likely_packed\"] is True\n",
+        "    assert sha256_hash(plain_sample) == sha256_hash(plain_sample)\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment10()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OdeGmMHgFLOK",
+        "outputId": "ca849d7c-c39d-4828-fcfb-e8060c7c81bb"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
