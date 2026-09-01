@@ -1,0 +1,103 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMES7Z3kL3D3OKi1OUfDE51",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2011\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tzgmY54oMkga",
+        "outputId": "b01ce5a1-0ccd-419a-ac95-9e08d04216bb"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "PROCESS HIERARCHY\n",
+            "-----------------\n",
+            "explorer.exe\n",
+            "  -> cmd.exe\n",
+            "cmd.exe\n",
+            "  -> notepad.exe\n",
+            "  -> powershell.exe\n",
+            "winword.exe\n",
+            "  -> powershell.exe\n",
+            "\n",
+            "SUSPICIOUS PROCESSES\n",
+            "--------------------\n",
+            "Suspicious: powershell.exe\n",
+            "Parent: cmd.exe\n",
+            "Suspicious: powershell.exe\n",
+            "Parent: winword.exe\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "logs = [\n",
+        "    (\"explorer.exe\", \"cmd.exe\"),\n",
+        "    (\"cmd.exe\", \"notepad.exe\"),\n",
+        "    (\"cmd.exe\", \"powershell.exe\"),\n",
+        "    (\"winword.exe\", \"powershell.exe\")\n",
+        "]\n",
+        "\n",
+        "# Expected parent-child relationships\n",
+        "expected = {\n",
+        "    \"explorer.exe\": [\"cmd.exe\", \"notepad.exe\"],\n",
+        "    \"cmd.exe\": [\"notepad.exe\"],\n",
+        "    \"winword.exe\": [\"winword.exe\"]\n",
+        "}\n",
+        "\n",
+        "tree = defaultdict(list)\n",
+        "\n",
+        "for parent, child in logs:\n",
+        "    tree[parent].append(child)\n",
+        "\n",
+        "print(\"PROCESS HIERARCHY\")\n",
+        "print(\"-----------------\")\n",
+        "\n",
+        "for parent, children in tree.items():\n",
+        "    print(parent)\n",
+        "    for child in children:\n",
+        "        print(\"  ->\", child)\n",
+        "\n",
+        "print(\"\\nSUSPICIOUS PROCESSES\")\n",
+        "print(\"--------------------\")\n",
+        "\n",
+        "for parent, child in logs:\n",
+        "    if child not in expected.get(parent, []):\n",
+        "        print(\"Suspicious:\", child)\n",
+        "        print(\"Parent:\", parent)"
+      ]
+    }
+  ]
+}
