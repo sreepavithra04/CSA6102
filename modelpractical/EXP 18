@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPaFpCA+r4cdEFMBdpBEU0h",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2018\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7Tes33LPPIt4",
+        "outputId": "a14a1dac-0f93-4e8d-8494-3dedd42dccb7"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "FILE SYSTEM ACTIVITY\n",
+            "--------------------\n",
+            "E01 file1.txt Creation\n",
+            "E02 file2.txt Creation\n",
+            "E03 file1.txt Modification\n",
+            "E04 file1.txt Modification\n",
+            "E05 file2.txt Deletion\n",
+            "\n",
+            "SUMMARY\n",
+            "Creations: 2\n",
+            "Modifications: 2\n",
+            "Deletions: 1\n",
+            "\n",
+            "Most Frequently Affected:\n",
+            "[('file1.txt', 3)]\n"
+          ]
+        }
+      ],
+      "source": [
+        "events = [\n",
+        "    (\"E01\", \"file1.txt\", \"Creation\"),\n",
+        "    (\"E02\", \"file2.txt\", \"Creation\"),\n",
+        "    (\"E03\", \"file1.txt\", \"Modification\"),\n",
+        "    (\"E04\", \"file1.txt\", \"Modification\"),\n",
+        "    (\"E05\", \"file2.txt\", \"Deletion\")\n",
+        "]\n",
+        "\n",
+        "counts = {\n",
+        "    \"Creation\": 0,\n",
+        "    \"Modification\": 0,\n",
+        "    \"Deletion\": 0\n",
+        "}\n",
+        "\n",
+        "print(\"FILE SYSTEM ACTIVITY\")\n",
+        "print(\"--------------------\")\n",
+        "\n",
+        "for event, file, action in events:\n",
+        "    print(event, file, action)\n",
+        "    counts[action] += 1\n",
+        "\n",
+        "print(\"\\nSUMMARY\")\n",
+        "print(\"Creations:\", counts[\"Creation\"])\n",
+        "print(\"Modifications:\", counts[\"Modification\"])\n",
+        "print(\"Deletions:\", counts[\"Deletion\"])\n",
+        "\n",
+        "from collections import Counter\n",
+        "\n",
+        "files = Counter(e[1] for e in events)\n",
+        "\n",
+        "print(\"\\nMost Frequently Affected:\")\n",
+        "print(files.most_common(1))"
+      ]
+    }
+  ]
+}
