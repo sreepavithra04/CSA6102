@@ -1,0 +1,124 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPD8GGI9Tcq5ULI8/3qJFnD",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2020\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mNxQ21hZPoWP",
+        "outputId": "e1f1ff66-0f8b-4491-dfa6-30ca406f5341"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "DOMAIN REGISTRATION SUMMARY\n",
+            "---------------------------\n",
+            "\n",
+            "Domain: example.com\n",
+            "Registrar: Registrar-A\n",
+            "Registered: 2020-01-10\n",
+            "Expires: 2027-01-10\n",
+            "Name Server: ns1.example.com\n",
+            "\n",
+            "Domain: example.net\n",
+            "Registrar: Registrar-A\n",
+            "Registered: 2021-02-15\n",
+            "Expires: 2027-02-15\n",
+            "Name Server: ns1.example.com\n",
+            "\n",
+            "Domain: test.com\n",
+            "Registrar: Registrar-B\n",
+            "Registered: 2022-05-20\n",
+            "Expires: 2027-05-20\n",
+            "Name Server: ns1.test.com\n",
+            "\n",
+            "SHARED REGISTRATION CHARACTERISTICS\n",
+            "------------------------------------\n",
+            "Registrar: Registrar-A\n",
+            "Domains: ['example.com', 'example.net']\n"
+          ]
+        }
+      ],
+      "source": [
+        "domains = [\n",
+        "    {\n",
+        "        \"domain\": \"example.com\",\n",
+        "        \"registrar\": \"Registrar-A\",\n",
+        "        \"registered\": \"2020-01-10\",\n",
+        "        \"expires\": \"2027-01-10\",\n",
+        "        \"nameserver\": \"ns1.example.com\"\n",
+        "    },\n",
+        "    {\n",
+        "        \"domain\": \"example.net\",\n",
+        "        \"registrar\": \"Registrar-A\",\n",
+        "        \"registered\": \"2021-02-15\",\n",
+        "        \"expires\": \"2027-02-15\",\n",
+        "        \"nameserver\": \"ns1.example.com\"\n",
+        "    },\n",
+        "    {\n",
+        "        \"domain\": \"test.com\",\n",
+        "        \"registrar\": \"Registrar-B\",\n",
+        "        \"registered\": \"2022-05-20\",\n",
+        "        \"expires\": \"2027-05-20\",\n",
+        "        \"nameserver\": \"ns1.test.com\"\n",
+        "    }\n",
+        "]\n",
+        "\n",
+        "print(\"DOMAIN REGISTRATION SUMMARY\")\n",
+        "print(\"---------------------------\")\n",
+        "\n",
+        "for d in domains:\n",
+        "    print(\"\\nDomain:\", d[\"domain\"])\n",
+        "    print(\"Registrar:\", d[\"registrar\"])\n",
+        "    print(\"Registered:\", d[\"registered\"])\n",
+        "    print(\"Expires:\", d[\"expires\"])\n",
+        "    print(\"Name Server:\", d[\"nameserver\"])\n",
+        "\n",
+        "print(\"\\nSHARED REGISTRATION CHARACTERISTICS\")\n",
+        "print(\"------------------------------------\")\n",
+        "\n",
+        "from collections import defaultdict\n",
+        "\n",
+        "registrars = defaultdict(list)\n",
+        "\n",
+        "for d in domains:\n",
+        "    registrars[d[\"registrar\"]].append(d[\"domain\"])\n",
+        "\n",
+        "for registrar, names in registrars.items():\n",
+        "    if len(names) > 1:\n",
+        "        print(\"Registrar:\", registrar)\n",
+        "        print(\"Domains:\", names)"
+      ]
+    }
+  ]
+}
