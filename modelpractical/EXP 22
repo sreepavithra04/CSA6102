@@ -1,0 +1,88 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNT8R3apKa8LkKA++7Vs1z5",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2022\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "r9enuYazQkU8",
+        "outputId": "f8303cc5-0c85-4891-fa9a-485099ab0cca"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "INTEGRITY COMPARISON\n",
+            "--------------------\n",
+            "Renamed: c.txt\n",
+            "Modified: b.txt\n"
+          ]
+        }
+      ],
+      "source": [
+        "import csv\n",
+        "\n",
+        "baseline = {\n",
+        "    \"a.txt\": \"AAA\",\n",
+        "    \"b.txt\": \"BBB\",\n",
+        "    \"c.txt\": \"CCC\"\n",
+        "}\n",
+        "\n",
+        "snapshot = {\n",
+        "    \"a.txt\": \"AAA\",\n",
+        "    \"b.txt\": \"XXX\",\n",
+        "    \"d.txt\": \"CCC\"\n",
+        "}\n",
+        "\n",
+        "print(\"INTEGRITY COMPARISON\")\n",
+        "print(\"--------------------\")\n",
+        "\n",
+        "for file in baseline:\n",
+        "    if file not in snapshot:\n",
+        "        # Check whether its hash exists under another name\n",
+        "        if baseline[file] in snapshot.values():\n",
+        "            print(\"Renamed:\", file)\n",
+        "        else:\n",
+        "            print(\"Missing:\", file)\n",
+        "\n",
+        "for file in snapshot:\n",
+        "    if file not in baseline:\n",
+        "        if snapshot[file] not in baseline.values():\n",
+        "            print(\"New:\", file)\n",
+        "\n",
+        "for file in baseline:\n",
+        "    if file in snapshot and baseline[file] != snapshot[file]:\n",
+        "        print(\"Modified:\", file)"
+      ]
+    }
+  ]
+}
