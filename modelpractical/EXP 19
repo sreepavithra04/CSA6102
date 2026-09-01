@@ -1,0 +1,99 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOxb8O3XCE+ROuDuhJwqF6K",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2019\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hk6k4HR0PXqY",
+        "outputId": "aaebfaae-d715-4688-bb97-0bbdc4fc4321"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "CORRELATED FORENSIC TIMELINE\n",
+            "----------------------------\n",
+            "10:00 | File Activity | report.docx opened\n",
+            "10:02 | Authentication | Alice login\n",
+            "10:03 | Browser | Website visited\n",
+            "10:04 | Network | Connection established\n",
+            "11:00 | File Activity | image.jpg modified\n",
+            "11:30 | Network | Data transferred\n",
+            "\n",
+            "CLOSELY RELATED ACTIVITIES\n",
+            "--------------------------\n",
+            "('10:00', 'File Activity', 'report.docx opened')\n",
+            "('10:02', 'Authentication', 'Alice login')\n",
+            "\n",
+            "('10:02', 'Authentication', 'Alice login')\n",
+            "('10:03', 'Browser', 'Website visited')\n",
+            "\n",
+            "('10:03', 'Browser', 'Website visited')\n",
+            "('10:04', 'Network', 'Connection established')\n",
+            "\n"
+          ]
+        }
+      ],
+      "source": [
+        "events = [\n",
+        "    (\"10:00\", \"File Activity\", \"report.docx opened\"),\n",
+        "    (\"10:02\", \"Authentication\", \"Alice login\"),\n",
+        "    (\"10:03\", \"Browser\", \"Website visited\"),\n",
+        "    (\"10:04\", \"Network\", \"Connection established\"),\n",
+        "    (\"11:00\", \"File Activity\", \"image.jpg modified\"),\n",
+        "    (\"11:30\", \"Network\", \"Data transferred\")\n",
+        "]\n",
+        "\n",
+        "events.sort(key=lambda x: x[0])\n",
+        "\n",
+        "print(\"CORRELATED FORENSIC TIMELINE\")\n",
+        "print(\"----------------------------\")\n",
+        "\n",
+        "for time, source, activity in events:\n",
+        "    print(time, \"|\", source, \"|\", activity)\n",
+        "\n",
+        "print(\"\\nCLOSELY RELATED ACTIVITIES\")\n",
+        "print(\"--------------------------\")\n",
+        "\n",
+        "for i in range(len(events) - 1):\n",
+        "    t1 = int(events[i][0].replace(\":\", \"\"))\n",
+        "    t2 = int(events[i + 1][0].replace(\":\", \"\"))\n",
+        "\n",
+        "    if t2 - t1 <= 2:\n",
+        "        print(events[i])\n",
+        "        print(events[i + 1])\n",
+        "        print()"
+      ]
+    }
+  ]
+}
