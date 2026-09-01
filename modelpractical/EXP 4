@@ -1,0 +1,91 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMgg88Gcp4WCdb6VEeKhrjw",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%204\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8KFA7WG0I5gl",
+        "outputId": "31ee925f-9d7a-4ea3-acd8-fbde682dedf9"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Firewall Findings:\n",
+            "\n",
+            "Source: 10.1.1.5\n",
+            "Port: 22\n",
+            "Attempts: 3\n",
+            "Timestamps: ['10:00', '10:05', '10:10']\n",
+            "Status: Persistent Activity\n",
+            "\n",
+            "Source: 10.1.1.8\n",
+            "Port: 23\n",
+            "Attempts: 2\n",
+            "Timestamps: ['11:00', '11:05']\n",
+            "Status: Normal\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "logs = [\n",
+        "    (\"10.1.1.5\", 22, \"10:00\"),\n",
+        "    (\"10.1.1.5\", 22, \"10:05\"),\n",
+        "    (\"10.1.1.5\", 22, \"10:10\"),\n",
+        "    (\"10.1.1.8\", 23, \"11:00\"),\n",
+        "    (\"10.1.1.8\", 23, \"11:05\")\n",
+        "]\n",
+        "\n",
+        "groups = defaultdict(list)\n",
+        "\n",
+        "for ip, port, time in logs:\n",
+        "    groups[(ip, port)].append(time)\n",
+        "\n",
+        "print(\"Firewall Findings:\")\n",
+        "\n",
+        "for key, times in groups.items():\n",
+        "    print(\"\\nSource:\", key[0])\n",
+        "    print(\"Port:\", key[1])\n",
+        "    print(\"Attempts:\", len(times))\n",
+        "    print(\"Timestamps:\", times)\n",
+        "\n",
+        "    if len(times) >= 3:\n",
+        "        print(\"Status: Persistent Activity\")\n",
+        "    else:\n",
+        "        print(\"Status: Normal\")"
+      ]
+    }
+  ]
+}
