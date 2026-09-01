@@ -1,0 +1,85 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMvl2u+IA6WDVgcyBnnhPK5",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%207\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7ZURUqP6Kzer",
+        "outputId": "a104cd29-77f9-498e-92af-0604a84a33dc"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Anomaly: Alice - Successful login after many failures\n",
+            "Anomaly: Alice - New source IP: 10.0.0.5\n",
+            "Anomaly: Bob - Login at unusual time\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "logs = [\n",
+        "    (\"Alice\", \"10.0.0.1\", 10, \"FAIL\"),\n",
+        "    (\"Alice\", \"10.0.0.1\", 10, \"FAIL\"),\n",
+        "    (\"Alice\", \"10.0.0.1\", 10, \"FAIL\"),\n",
+        "    (\"Alice\", \"10.0.0.5\", 10, \"SUCCESS\"),\n",
+        "    (\"Bob\", \"10.0.0.9\", 2, \"SUCCESS\")\n",
+        "]\n",
+        "\n",
+        "failures = defaultdict(int)\n",
+        "known_ips = defaultdict(set)\n",
+        "\n",
+        "for user, ip, hour, status in logs:\n",
+        "\n",
+        "    if status == \"FAIL\":\n",
+        "        failures[user] += 1\n",
+        "\n",
+        "    if status == \"SUCCESS\" and failures[user] >= 3:\n",
+        "        print(\"Anomaly:\", user,\n",
+        "              \"- Successful login after many failures\")\n",
+        "\n",
+        "    if hour < 6 or hour > 22:\n",
+        "        print(\"Anomaly:\", user,\n",
+        "              \"- Login at unusual time\")\n",
+        "\n",
+        "    if ip not in known_ips[user] and known_ips[user]:\n",
+        "        print(\"Anomaly:\", user,\n",
+        "              \"- New source IP:\", ip)\n",
+        "\n",
+        "    known_ips[user].add(ip)"
+      ]
+    }
+  ]
+}
