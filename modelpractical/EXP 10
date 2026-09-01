@@ -1,0 +1,96 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOsfjykxIvMmyvzof16Fn5l",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2010\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GaIyujkUL9Ic",
+        "outputId": "ecd386cf-e088-4620-eac0-6137e5364c4d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "FORENSIC EXAMINATION SUMMARY\n",
+            "===================================\n",
+            "\n",
+            "EVIDENCE\n",
+            "- EX-01\n",
+            "\n",
+            "OBSERVATION\n",
+            "- File found on suspect system\n",
+            "\n",
+            "STEP\n",
+            "- SHA-256 hash calculated\n",
+            "\n",
+            "FINDING\n",
+            "- Hash matched original value\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Create sample notes file\n",
+        "with open(\"notes.txt\", \"w\") as f:\n",
+        "    f.write(\"\"\"Evidence: EX-01\n",
+        "Observation: File found on suspect system\n",
+        "Step: SHA-256 hash calculated\n",
+        "Finding: Hash matched original value\n",
+        "\"\"\")\n",
+        "\n",
+        "sections = {\n",
+        "    \"Evidence\": [],\n",
+        "    \"Observation\": [],\n",
+        "    \"Step\": [],\n",
+        "    \"Finding\": []\n",
+        "}\n",
+        "\n",
+        "with open(\"notes.txt\", \"r\") as f:\n",
+        "    for line in f:\n",
+        "        if \":\" in line:\n",
+        "            key, value = line.strip().split(\":\", 1)\n",
+        "\n",
+        "            if key in sections:\n",
+        "                sections[key].append(value.strip())\n",
+        "\n",
+        "print(\"FORENSIC EXAMINATION SUMMARY\")\n",
+        "print(\"=\" * 35)\n",
+        "\n",
+        "for section, values in sections.items():\n",
+        "    print(\"\\n\" + section.upper())\n",
+        "\n",
+        "    for value in values:\n",
+        "        print(\"-\", value)"
+      ]
+    }
+  ]
+}
