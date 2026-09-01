@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO2XvEYjDoZl8vIqoPICnjM",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2017\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "nkuXKSvoOzkH",
+        "outputId": "f992e9cc-f350-468f-bcf7-164c28a94fff"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "EVIDENCE INVENTORY\n",
+            "------------------\n",
+            "EX-01 Document Laptop Verified\n",
+            "EX-02 Image USB Changed\n",
+            "\n",
+            "Enter evidence type to search: IMAGE\n",
+            "\n",
+            "SEARCH RESULTS\n",
+            "{'id': 'EX-02', 'type': 'Image', 'description': 'Photo', 'source': 'USB', 'method': 'Copy', 'location': 'Locker B', 'size': 2500, 'hash': 'XYZ789', 'status': 'Changed'}\n"
+          ]
+        }
+      ],
+      "source": [
+        "evidence = [\n",
+        "    {\n",
+        "        \"id\": \"EX-01\",\n",
+        "        \"type\": \"Document\",\n",
+        "        \"description\": \"Email file\",\n",
+        "        \"source\": \"Laptop\",\n",
+        "        \"method\": \"Disk Image\",\n",
+        "        \"location\": \"Locker A\",\n",
+        "        \"size\": 1200,\n",
+        "        \"hash\": \"ABC123\",\n",
+        "        \"status\": \"Verified\"\n",
+        "    },\n",
+        "    {\n",
+        "        \"id\": \"EX-02\",\n",
+        "        \"type\": \"Image\",\n",
+        "        \"description\": \"Photo\",\n",
+        "        \"source\": \"USB\",\n",
+        "        \"method\": \"Copy\",\n",
+        "        \"location\": \"Locker B\",\n",
+        "        \"size\": 2500,\n",
+        "        \"hash\": \"XYZ789\",\n",
+        "        \"status\": \"Changed\"\n",
+        "    }\n",
+        "]\n",
+        "\n",
+        "print(\"EVIDENCE INVENTORY\")\n",
+        "print(\"------------------\")\n",
+        "\n",
+        "for e in evidence:\n",
+        "    print(e[\"id\"], e[\"type\"], e[\"source\"], e[\"status\"])\n",
+        "\n",
+        "search_type = input(\"\\nEnter evidence type to search: \")\n",
+        "\n",
+        "print(\"\\nSEARCH RESULTS\")\n",
+        "\n",
+        "for e in evidence:\n",
+        "    if e[\"type\"].lower() == search_type.lower():\n",
+        "        print(e)"
+      ]
+    }
+  ]
+}
