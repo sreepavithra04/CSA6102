@@ -1,0 +1,95 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN5/xPvz+cBTzfJGCN4HTH0",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2024\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "fUyrI05PRUCs",
+        "outputId": "99149faf-0ff0-44c9-8abc-e1586d987b74"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "CONSOLIDATED INDICATORS\n",
+            "-----------------------\n",
+            "bc1q1234567890 -> ['log2.txt']\n",
+            "example.com -> ['log1.txt', 'log2.txt']\n",
+            "192.168.1.10 -> ['log1.txt']\n",
+            "http://example.com -> ['log1.txt']\n",
+            "admin@test.com -> ['log1.txt']\n",
+            "test.com -> ['log1.txt']\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "import os\n",
+        "from collections import Counter\n",
+        "\n",
+        "# Create sample text files\n",
+        "os.makedirs(\"texts\", exist_ok=True)\n",
+        "\n",
+        "with open(\"texts/log1.txt\", \"w\") as f:\n",
+        "    f.write(\"Contact admin@test.com at 192.168.1.10 http://example.com\")\n",
+        "\n",
+        "with open(\"texts/log2.txt\", \"w\") as f:\n",
+        "    f.write(\"Wallet bc1q1234567890 and visit example.com\")\n",
+        "\n",
+        "patterns = {\n",
+        "    \"IP\": r\"\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b\",\n",
+        "    \"URL\": r\"https?://[^\\s]+\",\n",
+        "    \"Email\": r\"[\\w.-]+@[\\w.-]+\\.\\w+\",\n",
+        "    \"Crypto\": r\"\\b(?:bc1|1|3)[a-zA-Z0-9]{10,}\\b\",\n",
+        "    \"Domain\": r\"\\b[\\w.-]+\\.(?:com|org|net)\\b\"\n",
+        "}\n",
+        "\n",
+        "results = {}\n",
+        "\n",
+        "for file in os.listdir(\"texts\"):\n",
+        "    with open(\"texts/\" + file) as f:\n",
+        "        text = f.read()\n",
+        "\n",
+        "    for kind, pattern in patterns.items():\n",
+        "        for value in re.findall(pattern, text):\n",
+        "            results.setdefault(value, set()).add(file)\n",
+        "\n",
+        "print(\"CONSOLIDATED INDICATORS\")\n",
+        "print(\"-----------------------\")\n",
+        "\n",
+        "for value, files in results.items():\n",
+        "    print(value, \"->\", list(files))"
+      ]
+    }
+  ]
+}
