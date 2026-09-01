@@ -1,0 +1,112 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO3mP8UdrbtqAZNjlH+XIkY",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%209\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rTVEdgBJLgyH",
+        "outputId": "bf43e8f3-5cd7-4e12-d80b-9cc0dc7f9542"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Emails Requiring Investigation:\n",
+            "\n",
+            "Score: 10\n",
+            "Sender: alert@unknown.xyz\n",
+            "Recipient: user@company.com\n",
+            "Subject: Urgent Account Verification\n",
+            "Attachment: invoice.exe\n",
+            "URL: http://fake-site.xyz\n",
+            "Time: 02:00\n"
+          ]
+        }
+      ],
+      "source": [
+        "emails = [\n",
+        "    {\n",
+        "        \"sender\": \"admin@company.com\",\n",
+        "        \"recipient\": \"user@company.com\",\n",
+        "        \"subject\": \"Meeting\",\n",
+        "        \"attachment\": \"\",\n",
+        "        \"url\": \"\",\n",
+        "        \"time\": \"10:00\"\n",
+        "    },\n",
+        "    {\n",
+        "        \"sender\": \"alert@unknown.xyz\",\n",
+        "        \"recipient\": \"user@company.com\",\n",
+        "        \"subject\": \"Urgent Account Verification\",\n",
+        "        \"attachment\": \"invoice.exe\",\n",
+        "        \"url\": \"http://fake-site.xyz\",\n",
+        "        \"time\": \"02:00\"\n",
+        "    }\n",
+        "]\n",
+        "\n",
+        "for mail in emails:\n",
+        "    score = 0\n",
+        "\n",
+        "    if not mail[\"sender\"].endswith(\"@company.com\"):\n",
+        "        score += 2\n",
+        "\n",
+        "    if mail[\"attachment\"].endswith((\".exe\", \".js\", \".bat\")):\n",
+        "        score += 3\n",
+        "\n",
+        "    if mail[\"url\"].startswith(\"http://\"):\n",
+        "        score += 2\n",
+        "\n",
+        "    if \"urgent\" in mail[\"subject\"].lower():\n",
+        "        score += 2\n",
+        "\n",
+        "    if int(mail[\"time\"][:2]) < 6:\n",
+        "        score += 1\n",
+        "\n",
+        "    mail[\"score\"] = score\n",
+        "\n",
+        "emails.sort(key=lambda x: x[\"score\"], reverse=True)\n",
+        "\n",
+        "print(\"Emails Requiring Investigation:\")\n",
+        "\n",
+        "for mail in emails:\n",
+        "    if mail[\"score\"] >= 3:\n",
+        "        print(\"\\nScore:\", mail[\"score\"])\n",
+        "        print(\"Sender:\", mail[\"sender\"])\n",
+        "        print(\"Recipient:\", mail[\"recipient\"])\n",
+        "        print(\"Subject:\", mail[\"subject\"])\n",
+        "        print(\"Attachment:\", mail[\"attachment\"])\n",
+        "        print(\"URL:\", mail[\"url\"])\n",
+        "        print(\"Time:\", mail[\"time\"])"
+      ]
+    }
+  ]
+}
