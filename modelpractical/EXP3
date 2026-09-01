@@ -1,0 +1,83 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPml1V3lBSO2UIG1HpjSHb1",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP3\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "l4YhnIl2InOt",
+        "outputId": "47e48027-b37a-40fa-e19a-19e70931cf5f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Recently Used Documents:\n",
+            "('report.docx', 'Bob', 'Word', '2026-08-30 12:00', 'Edit')\n",
+            "('data.xlsx', 'Bob', 'Excel', '2026-08-30 11:00', 'Open')\n",
+            "('report.docx', 'Alice', 'Word', '2026-08-30 10:00', 'Open')\n",
+            "('photo.jpg', 'Alice', 'Photos', '2026-08-30 09:00', 'Open')\n",
+            "\n",
+            "Files Accessed By Multiple Users:\n",
+            "report.docx -> {'Alice', 'Bob'}\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "logs = [\n",
+        "    (\"report.docx\", \"Alice\", \"Word\", \"2026-08-30 10:00\", \"Open\"),\n",
+        "    (\"data.xlsx\", \"Bob\", \"Excel\", \"2026-08-30 11:00\", \"Open\"),\n",
+        "    (\"report.docx\", \"Bob\", \"Word\", \"2026-08-30 12:00\", \"Edit\"),\n",
+        "    (\"photo.jpg\", \"Alice\", \"Photos\", \"2026-08-30 09:00\", \"Open\")\n",
+        "]\n",
+        "\n",
+        "logs.sort(key=lambda x: x[3], reverse=True)\n",
+        "\n",
+        "print(\"Recently Used Documents:\")\n",
+        "for x in logs:\n",
+        "    print(x)\n",
+        "\n",
+        "users = defaultdict(set)\n",
+        "\n",
+        "for file, user, app, time, activity in logs:\n",
+        "    users[file].add(user)\n",
+        "\n",
+        "print(\"\\nFiles Accessed By Multiple Users:\")\n",
+        "for file, user_list in users.items():\n",
+        "    if len(user_list) > 1:\n",
+        "        print(file, \"->\", user_list)"
+      ]
+    }
+  ]
+}
