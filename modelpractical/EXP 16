@@ -1,0 +1,91 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMIlXSO0dczkRE82m+HJyOA",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2016\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sF24wTZOOgwR",
+        "outputId": "3b518662-ccbd-4361-cd1a-54304ba5f82b"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Suspicious Domain: g00gle.com\n",
+            "Closest Legitimate: google.com\n",
+            "\n",
+            "Suspicious Domain: google-login.com\n",
+            "Closest Legitimate: google.com\n",
+            "\n",
+            "Suspicious Domain: micros0ft.com\n",
+            "Closest Legitimate: microsoft.com\n",
+            "\n",
+            "Suspicious Domain: amazon-security.com\n",
+            "Closest Legitimate: amazon.com\n",
+            "\n"
+          ]
+        }
+      ],
+      "source": [
+        "legitimate = [\n",
+        "    \"google.com\",\n",
+        "    \"microsoft.com\",\n",
+        "    \"amazon.com\"\n",
+        "]\n",
+        "\n",
+        "suspicious = [\n",
+        "    \"g00gle.com\",\n",
+        "    \"google-login.com\",\n",
+        "    \"micros0ft.com\",\n",
+        "    \"amazon-security.com\"\n",
+        "]\n",
+        "\n",
+        "for bad in suspicious:\n",
+        "    best = \"\"\n",
+        "    score = 0\n",
+        "\n",
+        "    for good in legitimate:\n",
+        "        # Compare characters\n",
+        "        common = sum(a == b for a, b in zip(bad, good))\n",
+        "\n",
+        "        if common > score:\n",
+        "            score = common\n",
+        "            best = good\n",
+        "\n",
+        "    print(\"Suspicious Domain:\", bad)\n",
+        "    print(\"Closest Legitimate:\", best)\n",
+        "    print()"
+      ]
+    }
+  ]
+}
