@@ -1,0 +1,100 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMAxRs0kTbXLCcp87DAjPDF",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2023\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0hjyDfkbQ_QC",
+        "outputId": "9619da0f-a2a8-49fe-b122-3a192981102f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "CONCEALED OBJECT REPORT\n",
+            "-----------------------\n",
+            "\n",
+            "File: normal.txt\n",
+            "Size: 4\n",
+            "Status: Ordinary\n",
+            "\n",
+            "File: empty.txt\n",
+            "Size: 0\n",
+            "Examination Required: Zero-size file\n",
+            "\n",
+            "File: .hidden.txt\n",
+            "Size: 6\n",
+            "Examination Required: Hidden filename\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "\n",
+        "folder = \"test_folder\"\n",
+        "\n",
+        "# Create sample directory\n",
+        "os.makedirs(folder, exist_ok=True)\n",
+        "\n",
+        "open(folder + \"/normal.txt\", \"w\").write(\"data\")\n",
+        "open(folder + \"/.hidden.txt\", \"w\").write(\"secret\")\n",
+        "open(folder + \"/empty.txt\", \"w\").close()\n",
+        "\n",
+        "print(\"CONCEALED OBJECT REPORT\")\n",
+        "print(\"-----------------------\")\n",
+        "\n",
+        "for name in os.listdir(folder):\n",
+        "    path = os.path.join(folder, name)\n",
+        "    size = os.path.getsize(path)\n",
+        "    warnings = []\n",
+        "\n",
+        "    if name.startswith(\".\"):\n",
+        "        warnings.append(\"Hidden filename\")\n",
+        "\n",
+        "    if size == 0:\n",
+        "        warnings.append(\"Zero-size file\")\n",
+        "\n",
+        "    if \" \" in name:\n",
+        "        warnings.append(\"Unusual filename\")\n",
+        "\n",
+        "    print(\"\\nFile:\", name)\n",
+        "    print(\"Size:\", size)\n",
+        "\n",
+        "    if warnings:\n",
+        "        print(\"Examination Required:\", \", \".join(warnings))\n",
+        "    else:\n",
+        "        print(\"Status: Ordinary\")"
+      ]
+    }
+  ]
+}
