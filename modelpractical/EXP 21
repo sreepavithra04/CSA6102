@@ -1,0 +1,95 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNWDQgCdZf7ANvf+UNS3jpN",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2021\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aDfhLrEAQTRb",
+        "outputId": "85383c83-1d66-4919-be26-31a34fbcb52f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "ORIGINAL: {'size': 19, 'MD5': '1e96148ad147be22bb290fdf82fa00b3', 'SHA1': 'eb82d98932dacb0a7f591f471131b663ff981341', 'SHA256': '35d2f0801c996e487d56b61a528ea9da8e7f5210581d79a0006191e031f0e659'}\n",
+            "WORKING COPY: {'size': 19, 'MD5': '1e96148ad147be22bb290fdf82fa00b3', 'SHA1': 'eb82d98932dacb0a7f591f471131b663ff981341', 'SHA256': '35d2f0801c996e487d56b61a528ea9da8e7f5210581d79a0006191e031f0e659'}\n",
+            "Result: Working copy matches original\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "import os\n",
+        "\n",
+        "def verify(file):\n",
+        "    with open(file, \"rb\") as f:\n",
+        "        data = f.read()\n",
+        "\n",
+        "    return {\n",
+        "        \"size\": os.path.getsize(file),\n",
+        "        \"MD5\": hashlib.md5(data).hexdigest(),\n",
+        "        \"SHA1\": hashlib.sha1(data).hexdigest(),\n",
+        "        \"SHA256\": hashlib.sha256(data).hexdigest()\n",
+        "    }\n",
+        "\n",
+        "original = \"original.img\"\n",
+        "copy = \"working.img\"\n",
+        "\n",
+        "# Create sample files\n",
+        "with open(original, \"wb\") as f:\n",
+        "    f.write(b\"Forensic image data\")\n",
+        "\n",
+        "with open(copy, \"wb\") as f:\n",
+        "    f.write(b\"Forensic image data\")\n",
+        "\n",
+        "a = verify(original)\n",
+        "b = verify(copy)\n",
+        "\n",
+        "print(\"ORIGINAL:\", a)\n",
+        "print(\"WORKING COPY:\", b)\n",
+        "\n",
+        "if a == b:\n",
+        "    print(\"Result: Working copy matches original\")\n",
+        "else:\n",
+        "    print(\"Result: MISMATCH DETECTED\")\n",
+        "\n",
+        "    if a[\"size\"] != b[\"size\"]:\n",
+        "        print(\"Mismatch: File size\")\n",
+        "\n",
+        "    for h in [\"MD5\", \"SHA1\", \"SHA256\"]:\n",
+        "        if a[h] != b[h]:\n",
+        "            print(\"Mismatch:\", h)"
+      ]
+    }
+  ]
+}
