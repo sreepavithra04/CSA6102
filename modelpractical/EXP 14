@@ -1,0 +1,89 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMEtXFLTDZ8Xzl73oNvshdW",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2014\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Uxyu-jYaN7XN",
+        "outputId": "4cf7e8fb-7d67-487b-b526-87e742523003"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Stored: EX-01 afa148dfb09d32a69519e68d19406de534e32918836aba3d37f9bac492263c29\n",
+            "\n",
+            "Examining copy:\n",
+            "MATCH FOUND\n",
+            "Evidence ID: EX-01\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "\n",
+        "database = {}\n",
+        "\n",
+        "def get_hash(file):\n",
+        "    with open(file, \"rb\") as f:\n",
+        "        return hashlib.sha256(f.read()).hexdigest()\n",
+        "\n",
+        "def add_file(file, evidence_id):\n",
+        "    h = get_hash(file)\n",
+        "    database[h] = evidence_id\n",
+        "    print(\"Stored:\", evidence_id, h)\n",
+        "\n",
+        "def search_file(file):\n",
+        "    h = get_hash(file)\n",
+        "\n",
+        "    if h in database:\n",
+        "        print(\"MATCH FOUND\")\n",
+        "        print(\"Evidence ID:\", database[h])\n",
+        "    else:\n",
+        "        print(\"No matching evidence found\")\n",
+        "\n",
+        "# Create sample files\n",
+        "with open(\"evidence1.txt\", \"w\") as f:\n",
+        "    f.write(\"Forensic data\")\n",
+        "\n",
+        "with open(\"copy.txt\", \"w\") as f:\n",
+        "    f.write(\"Forensic data\")\n",
+        "\n",
+        "add_file(\"evidence1.txt\", \"EX-01\")\n",
+        "\n",
+        "print(\"\\nExamining copy:\")\n",
+        "search_file(\"copy.txt\")"
+      ]
+    }
+  ]
+}
