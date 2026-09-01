@@ -1,0 +1,113 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNLnI7VIzS+SXhC+5Jr4crl",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP5\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bGFZ5XkGJKUf",
+        "outputId": "db0a1264-8152-4110-c0b4-09f5485aadd6"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "File: document.pdf\n",
+            "Extension: .pdf\n",
+            "Detected Type: .pdf\n",
+            "Result: Valid\n",
+            "\n",
+            "File: image.jpg\n",
+            "Extension: .jpg\n",
+            "Detected Type: .png\n",
+            "WARNING: Extension mismatch\n",
+            "\n",
+            "File: archive.zip\n",
+            "Extension: .zip\n",
+            "Detected Type: .zip\n",
+            "Result: Valid\n",
+            "\n",
+            "File: program.exe\n",
+            "Extension: .exe\n",
+            "Detected Type: .exe\n",
+            "Result: Valid\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "\n",
+        "# Create sample files\n",
+        "files = {\n",
+        "    \"document.pdf\": b\"%PDF-1.4 Sample PDF\",\n",
+        "    \"image.jpg\": b\"\\x89PNG Sample Image\",\n",
+        "    \"archive.zip\": b\"PK Sample Archive\",\n",
+        "    \"program.exe\": b\"MZ Sample Program\"\n",
+        "}\n",
+        "\n",
+        "for name, data in files.items():\n",
+        "    with open(name, \"wb\") as f:\n",
+        "        f.write(data)\n",
+        "\n",
+        "signatures = {\n",
+        "    \".pdf\": b\"%PDF\",\n",
+        "    \".jpg\": b\"\\xff\\xd8\\xff\",\n",
+        "    \".png\": b\"\\x89PNG\",\n",
+        "    \".zip\": b\"PK\",\n",
+        "    \".exe\": b\"MZ\"\n",
+        "}\n",
+        "\n",
+        "for file in files:\n",
+        "    ext = os.path.splitext(file)[1]\n",
+        "\n",
+        "    with open(file, \"rb\") as f:\n",
+        "        header = f.read(8)\n",
+        "\n",
+        "    detected = \"Unknown\"\n",
+        "\n",
+        "    for e, sig in signatures.items():\n",
+        "        if header.startswith(sig):\n",
+        "            detected = e\n",
+        "\n",
+        "    print(\"\\nFile:\", file)\n",
+        "    print(\"Extension:\", ext)\n",
+        "    print(\"Detected Type:\", detected)\n",
+        "\n",
+        "    if ext == detected:\n",
+        "        print(\"Result: Valid\")\n",
+        "    else:\n",
+        "        print(\"WARNING: Extension mismatch\")"
+      ]
+    }
+  ]
+}
