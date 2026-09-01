@@ -1,0 +1,150 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNlma60NUUEGwF25glUw4O6",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%206\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "opZJ1bV0J3NS",
+        "outputId": "ace6e9b7-345a-458b-934d-12af94e70c68"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: Pillow in /usr/local/lib/python3.13/dist-packages (11.3.0)\n"
+          ]
+        }
+      ],
+      "source": [
+        "pip install Pillow"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from PIL import Image\n",
+        "\n",
+        "# Create two sample images\n",
+        "img1 = Image.new(\"RGB\", (800, 600), \"white\")\n",
+        "img1.save(\"image1.jpg\")\n",
+        "\n",
+        "img2 = Image.new(\"RGB\", (1024, 768), \"white\")\n",
+        "img2.save(\"image2.jpg\")\n",
+        "\n",
+        "\n",
+        "def get_metadata(file):\n",
+        "    img = Image.open(file)\n",
+        "\n",
+        "    data = {}\n",
+        "\n",
+        "    # Get EXIF metadata\n",
+        "    exif = img.getexif()\n",
+        "\n",
+        "    for key, value in exif.items():\n",
+        "        data[key] = value\n",
+        "\n",
+        "    # Store image dimensions\n",
+        "    data[\"Dimensions\"] = img.size\n",
+        "\n",
+        "    return data\n",
+        "\n",
+        "\n",
+        "a = get_metadata(\"image1.jpg\")\n",
+        "b = get_metadata(\"image2.jpg\")\n",
+        "\n",
+        "fields = [\n",
+        "    \"Make\",\n",
+        "    \"Model\",\n",
+        "    \"DateTime\",\n",
+        "    \"Orientation\",\n",
+        "    \"GPSInfo\",\n",
+        "    \"Dimensions\"\n",
+        "]\n",
+        "\n",
+        "print(\"IMAGE METADATA COMPARISON\")\n",
+        "print(\"-------------------------\")\n",
+        "\n",
+        "for field in fields:\n",
+        "\n",
+        "    if field == \"Dimensions\":\n",
+        "        x = a.get(field)\n",
+        "        y = b.get(field)\n",
+        "    else:\n",
+        "        # Common EXIF tag numbers\n",
+        "        tags = {\n",
+        "            \"Make\": 271,\n",
+        "            \"Model\": 272,\n",
+        "            \"DateTime\": 306,\n",
+        "            \"Orientation\": 274,\n",
+        "            \"GPSInfo\": 34853\n",
+        "        }\n",
+        "\n",
+        "        x = a.get(tags[field])\n",
+        "        y = b.get(tags[field])\n",
+        "\n",
+        "    if x is None or y is None:\n",
+        "        result = \"Unavailable\"\n",
+        "    elif x == y:\n",
+        "        result = \"Identical\"\n",
+        "    else:\n",
+        "        result = \"Different\"\n",
+        "\n",
+        "    print(field, \":\", result)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "WqLbmFPkKCUH",
+        "outputId": "ac49af40-a43c-4d06-8310-bd65f9dc0f36"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "IMAGE METADATA COMPARISON\n",
+            "-------------------------\n",
+            "Make : Unavailable\n",
+            "Model : Unavailable\n",
+            "DateTime : Unavailable\n",
+            "Orientation : Unavailable\n",
+            "GPSInfo : Unavailable\n",
+            "Dimensions : Different\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
