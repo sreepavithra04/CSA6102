@@ -1,0 +1,89 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPPA5uwBJypRdlqjW1ZouAR",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%208\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "oJLRrUyCLQqB",
+        "outputId": "4cb1c064-1e3b-4b63-b46a-a131656d163c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Traffic Anomalies:\n",
+            "\n",
+            "Record: ('unknown.com', 'FTP', 2, 5000)\n",
+            "Violated: New destination, New protocol, High transfer volume\n"
+          ]
+        }
+      ],
+      "source": [
+        "baseline = [\n",
+        "    (\"google.com\", \"HTTPS\", 10, 500),\n",
+        "    (\"example.com\", \"HTTPS\", 12, 400),\n",
+        "    (\"dns.com\", \"DNS\", 5, 50)\n",
+        "]\n",
+        "\n",
+        "new_logs = [\n",
+        "    (\"google.com\", \"HTTPS\", 10, 500),\n",
+        "    (\"unknown.com\", \"FTP\", 2, 5000),\n",
+        "    (\"dns.com\", \"DNS\", 5, 50)\n",
+        "]\n",
+        "\n",
+        "destinations = {x[0] for x in baseline}\n",
+        "protocols = {x[1] for x in baseline}\n",
+        "max_volume = max(x[3] for x in baseline)\n",
+        "\n",
+        "print(\"Traffic Anomalies:\")\n",
+        "\n",
+        "for record in new_logs:\n",
+        "    dest, protocol, time, volume = record\n",
+        "    violations = []\n",
+        "\n",
+        "    if dest not in destinations:\n",
+        "        violations.append(\"New destination\")\n",
+        "\n",
+        "    if protocol not in protocols:\n",
+        "        violations.append(\"New protocol\")\n",
+        "\n",
+        "    if volume > max_volume * 2:\n",
+        "        violations.append(\"High transfer volume\")\n",
+        "\n",
+        "    if violations:\n",
+        "        print(\"\\nRecord:\", record)\n",
+        "        print(\"Violated:\", \", \".join(violations))"
+      ]
+    }
+  ]
+}
