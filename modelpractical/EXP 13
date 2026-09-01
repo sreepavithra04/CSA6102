@@ -1,0 +1,89 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOtpj/G6B7j/OS9JkV6+Qkf",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2013\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jzWA6Kl3NiPZ",
+        "outputId": "808b99a3-e6f7-4256-b15a-5c7cd365a39f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "DNS RECONNAISSANCE SUMMARY\n",
+            "--------------------------\n",
+            "google.com -> 173.194.210.101\n",
+            "example.com -> 172.66.147.243\n",
+            "python.org -> 151.101.0.223\n",
+            "invalid-domain-test-12345.com -> Resolution Failed\n",
+            "\n",
+            "DOMAINS SHARING IP\n",
+            "------------------\n"
+          ]
+        }
+      ],
+      "source": [
+        "import socket\n",
+        "from collections import defaultdict\n",
+        "\n",
+        "domains = [\n",
+        "    \"google.com\",\n",
+        "    \"example.com\",\n",
+        "    \"python.org\",\n",
+        "    \"invalid-domain-test-12345.com\"\n",
+        "]\n",
+        "\n",
+        "ip_domains = defaultdict(list)\n",
+        "\n",
+        "print(\"DNS RECONNAISSANCE SUMMARY\")\n",
+        "print(\"--------------------------\")\n",
+        "\n",
+        "for domain in domains:\n",
+        "    try:\n",
+        "        ip = socket.gethostbyname(domain)\n",
+        "        print(domain, \"->\", ip)\n",
+        "        ip_domains[ip].append(domain)\n",
+        "    except socket.gaierror:\n",
+        "        print(domain, \"-> Resolution Failed\")\n",
+        "\n",
+        "print(\"\\nDOMAINS SHARING IP\")\n",
+        "print(\"------------------\")\n",
+        "\n",
+        "for ip, names in ip_domains.items():\n",
+        "    if len(names) > 1:\n",
+        "        print(ip, \":\", names)"
+      ]
+    }
+  ]
+}
