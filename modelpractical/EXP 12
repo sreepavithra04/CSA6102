@@ -1,0 +1,100 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPImZfRIgUCYgAmidVNFHb3",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2012\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IjqeLjsyNN_G",
+        "outputId": "3cd9c51e-4094-462a-e52b-b74fd5e1cd4b"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "TRAFFIC STATISTICS\n",
+            "------------------\n",
+            "Time: 10:0 Destination: 192.168.1.10 Packets: 3\n",
+            "Time: 10:1 Destination: 192.168.1.20 Packets: 6\n",
+            "\n",
+            "TRAFFIC SPIKES\n",
+            "--------------\n",
+            "Spike detected\n",
+            "Time: 10:1\n",
+            "Destination: 192.168.1.20\n",
+            "Packets: 6\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "# time, destination\n",
+        "packets = [\n",
+        "    (\"10:00\", \"192.168.1.10\"),\n",
+        "    (\"10:01\", \"192.168.1.10\"),\n",
+        "    (\"10:02\", \"192.168.1.10\"),\n",
+        "    (\"10:10\", \"192.168.1.20\"),\n",
+        "    (\"10:11\", \"192.168.1.20\"),\n",
+        "    (\"10:12\", \"192.168.1.20\"),\n",
+        "    (\"10:12\", \"192.168.1.20\"),\n",
+        "    (\"10:12\", \"192.168.1.20\"),\n",
+        "    (\"10:12\", \"192.168.1.20\")\n",
+        "]\n",
+        "\n",
+        "window = defaultdict(int)\n",
+        "\n",
+        "for time, destination in packets:\n",
+        "    minute = time[:4]\n",
+        "    window[(minute, destination)] += 1\n",
+        "\n",
+        "print(\"TRAFFIC STATISTICS\")\n",
+        "print(\"------------------\")\n",
+        "\n",
+        "for key, count in window.items():\n",
+        "    print(\"Time:\", key[0],\n",
+        "          \"Destination:\", key[1],\n",
+        "          \"Packets:\", count)\n",
+        "\n",
+        "print(\"\\nTRAFFIC SPIKES\")\n",
+        "print(\"--------------\")\n",
+        "\n",
+        "for key, count in window.items():\n",
+        "    if count >= 4:\n",
+        "        print(\"Spike detected\")\n",
+        "        print(\"Time:\", key[0])\n",
+        "        print(\"Destination:\", key[1])\n",
+        "        print(\"Packets:\", count)"
+      ]
+    }
+  ]
+}
