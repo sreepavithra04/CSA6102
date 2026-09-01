@@ -1,0 +1,109 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMCf2ndupIXSnm8wQzau+Qq",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/exp%201\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rwVuJPUEHLIR",
+        "outputId": "a0ffd90a-d114-4525-f5d7-0524e7ef27a6"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Evidence ID: EX-01\n",
+            "Source: Computer-01\n",
+            "Investigator: Investigator A\n",
+            "Location: Evidence Locker\n",
+            "Acquired: 2026-09-01 04:00:17.113610\n",
+            "SHA-256: b05ccc4025d043bd81512ec18d70d28a0c8e83e97367644cd691b182d0dab186\n",
+            "\n",
+            "Custody History:\n",
+            "('Investigator A', 'Collected', datetime.datetime(2026, 9, 1, 4, 0, 17, 113815))\n",
+            "('Investigator B', 'Examined', datetime.datetime(2026, 9, 1, 4, 0, 17, 113910))\n",
+            "Integrity: Verified\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "from datetime import datetime\n",
+        "\n",
+        "# Create sample evidence file\n",
+        "with open(\"evidence.txt\", \"w\") as f:\n",
+        "    f.write(\"Forensic evidence sample\")\n",
+        "\n",
+        "class Evidence:\n",
+        "    def __init__(self, eid, file, source, investigator, location):\n",
+        "        self.eid = eid\n",
+        "        self.file = file\n",
+        "        self.source = source\n",
+        "        self.investigator = investigator\n",
+        "        self.location = location\n",
+        "        self.time = datetime.now()\n",
+        "        self.hash = self.get_hash()\n",
+        "        self.custody = []\n",
+        "\n",
+        "    def get_hash(self):\n",
+        "        with open(self.file, \"rb\") as f:\n",
+        "            return hashlib.sha256(f.read()).hexdigest()\n",
+        "\n",
+        "    def add_custody(self, person, action):\n",
+        "        self.custody.append((person, action, datetime.now()))\n",
+        "\n",
+        "    def display(self):\n",
+        "        print(\"Evidence ID:\", self.eid)\n",
+        "        print(\"Source:\", self.source)\n",
+        "        print(\"Investigator:\", self.investigator)\n",
+        "        print(\"Location:\", self.location)\n",
+        "        print(\"Acquired:\", self.time)\n",
+        "        print(\"SHA-256:\", self.hash)\n",
+        "\n",
+        "        print(\"\\nCustody History:\")\n",
+        "        for c in self.custody:\n",
+        "            print(c)\n",
+        "\n",
+        "        print(\"Integrity:\",\n",
+        "              \"Verified\" if self.hash == self.get_hash() else \"Changed\")\n",
+        "\n",
+        "\n",
+        "e = Evidence(\"EX-01\", \"evidence.txt\", \"Computer-01\",\n",
+        "             \"Investigator A\", \"Evidence Locker\")\n",
+        "\n",
+        "e.add_custody(\"Investigator A\", \"Collected\")\n",
+        "e.add_custody(\"Investigator B\", \"Examined\")\n",
+        "e.display()"
+      ]
+    }
+  ]
+}
