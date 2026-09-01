@@ -1,0 +1,96 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPPjOfvkjNgQpUdCSgVMQQb",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/CSA6102/blob/main/modelpractical/EXP%2015\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wfvXSToNOPXl",
+        "outputId": "8644c1ed-d175-455f-dd09-d2951128a5c2"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "USB DEVICE USAGE HISTORY\n",
+            "------------------------\n",
+            "\n",
+            "Device: USB001\n",
+            "First Connected: 2026-08-28 09:00\n",
+            "Connection Count: 3\n",
+            "2026-08-28 09:00 - Alice\n",
+            "2026-08-30 11:00 - Alice\n",
+            "2026-08-31 14:00 - Alice\n",
+            "Previously Recognized: Yes\n",
+            "\n",
+            "Device: USB002\n",
+            "First Connected: 2026-08-29 10:30\n",
+            "Connection Count: 1\n",
+            "2026-08-29 10:30 - Bob\n",
+            "Previously Recognized: No\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "logs = [\n",
+        "    (\"2026-08-28 09:00\", \"USB001\", \"Alice\"),\n",
+        "    (\"2026-08-29 10:30\", \"USB002\", \"Bob\"),\n",
+        "    (\"2026-08-30 11:00\", \"USB001\", \"Alice\"),\n",
+        "    (\"2026-08-31 14:00\", \"USB001\", \"Alice\")\n",
+        "]\n",
+        "\n",
+        "devices = defaultdict(list)\n",
+        "\n",
+        "for time, device, user in logs:\n",
+        "    devices[device].append((time, user))\n",
+        "\n",
+        "print(\"USB DEVICE USAGE HISTORY\")\n",
+        "print(\"------------------------\")\n",
+        "\n",
+        "for device, records in devices.items():\n",
+        "    print(\"\\nDevice:\", device)\n",
+        "    print(\"First Connected:\", records[0][0])\n",
+        "    print(\"Connection Count:\", len(records))\n",
+        "\n",
+        "    for time, user in records:\n",
+        "        print(time, \"-\", user)\n",
+        "\n",
+        "    if len(records) > 1:\n",
+        "        print(\"Previously Recognized: Yes\")\n",
+        "    else:\n",
+        "        print(\"Previously Recognized: No\")"
+      ]
+    }
+  ]
+}
